@@ -1,5 +1,6 @@
 {
   "name": "@nikolay.matrosov/yc-api-gw-schema",
+  "private": false,
   "version": "1.0.0",
   "description": "Spectral Ruleset for Yandex Cloud API Gateway flavored OpenAPI specs",
   "main": ".spectral.yml",
