@@ -1,0 +1,16 @@
+{
+  "name": "@nikolay.matrosov/yc-api-gw-schema",
+  "version": "1.0.0",
+  "description": "Spectral Ruleset for Yandex Cloud API Gateway flavored OpenAPI specs",
+  "main": ".spectral.yml",
+  "scripts": {
+    "build": "scripts/schemas.sh && npx tsc -p ."
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "openapi-types": "^10.0.0",
+    "typescript-json-schema": "^0.53.0",
+    "@stoplight/spectral-cli": "^6.3.0"
+  }
+}

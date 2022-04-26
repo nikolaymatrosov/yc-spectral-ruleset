@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.schwarzit.spectralIntellijPlugin.settings.ProjectSettingsState">
+    <option name="includedFiles" value="**.yaml" />
+    <option name="ruleset" value="$PROJECT_DIR$/.spectral.yml" />
+  </component>
+</project>

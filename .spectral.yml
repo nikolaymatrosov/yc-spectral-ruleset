@@ -1,0 +1,82 @@
+extends: [ spectral:oas ]
+formats: [ "oas3" ]
+functionsDir: "./dist/functions"
+functions: [ ycPathParams, ycIntegrations ]
+overrides:
+  - formats: [ "oas3" ]
+    files:
+      - "*"
+    rules:
+      path-params: off
+rules:
+  yc-path-params:
+    description: 'Path parameters must be defined and valid.'
+    message: '{{error}}'
+    type: 'validation'
+    severity: 0
+    recommended: true
+    given: '$'
+    then:
+      function: ycPathParams
+  yc-security-scheme:
+    description: Validate custom `x-yc-apigateway-authorizer` fields in the components.securitySchemes
+    given: $.components.securitySchemes.[*]
+    severity: error
+    resolved: false
+    message: '{{error}}'
+    then:
+      field: x-yc-apigateway-authorizer
+      function: schema
+      functionOptions:
+        dialect: draft7
+        schema: {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "definitions": {
+            "AuthorizerType": {
+              "enum": [
+                "function",
+                "iam",
+                "jwt"
+              ],
+              "type": "string"
+            }
+          },
+          "properties": {
+            "authorizer_result_ttl_in_seconds": {
+              "description": "Optional parameter. A time limit on keeping the function response stored in the local API Gateway cache. If the parameter is omitted, the response is not cached.",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "function_id": {
+              "description": "Function ID.",
+              "type": "string"
+            },
+            "service_account_id": {
+              "description": "ID of the service account. Used for authorization when invoking a function. If you omit the parameter, the value used is that of the top-level parameter `service_account_id`. If there is no top-level parameter, the function is invoked without authorization.",
+              "type": "string"
+            },
+            "tag": {
+              "description": "Optional parameter. Version tag. Default value: `$latest`. Parameters are substituted in `tag`.",
+              "type": "string"
+            },
+            "type": {
+              "$ref": "#/definitions/AuthorizerType"
+            }
+          },
+          "required": [
+            "function_id",
+            "service_account_id",
+            "tag",
+            "type"
+          ],
+          "type": "object"
+        }
+  validate-yc-integrations:
+    description: Validate custom `x-yc-apigateway-integration` fields in the Path Object
+    given: $.paths.[*][get,post,put,delete,options,patch,"x-yc-apigateway-any-method"]
+    severity: error
+    resolved: false
+    message: '{{error}}'
+    then:
+      field: 'x-yc-apigateway-integration'
+      function: ycIntegrations
